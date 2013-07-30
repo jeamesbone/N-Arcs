@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>N-Arc Maker</title>
+    <link rel="stylesheet" href="narcmaker.css">
+  </head>
+  <body>
+    <h1>N-Arc Maker</h1>
+    <p>
+      Click to add points, drag the points and centroids to edit the geometry.
+      <br />
+      The points MUST be added in anti-clockwise order
+      <br />
+      Note: Centroids will reset when adding a new point
+    </p>
+    
+    <div id="content">
+      <div id="designer">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="10000" height="10000" id="narcArea" />
+      </div>
+      <div id="controls">
+        <button id="reset">Reset</button>
+        <button id="export">Export</button> 
+      </div>
+    </div>
+    
+    <div id="exportPopupBack"></div>
+    <div id="exportPopup"></div>
+    
+    <script type="application/dart" src="narcmaker.dart"></script>
+    <script src="packages/browser/dart.js"></script>
+  </body>
+</html>

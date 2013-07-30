@@ -1,0 +1,50 @@
+
+body {
+  background-color: #333;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.2em;
+  margin: 15px;
+  text-align: center;
+}
+
+h1, p {
+  color: #F8F8F8;
+}
+
+div#content {
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div#designer {
+  background: #F8F8F8;
+  height: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
+  overflow: scroll;
+}
+
+div#controls {
+  padding: 10px;
+}
+
+div#exportPopup {
+  border-radius: 10px;
+  background-color: #333;
+  color: #F8F8F8;
+  opacity: 1;
+  position: absolute;
+  width:600px;
+  height:400px;
+  margin-top:-200px;
+  top: 50%;
+  margin-left:-300px;
+  left:50%;
+  display: none;
+  z-index: 3;
+  overflow: auto;
+}
