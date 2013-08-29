@@ -6,7 +6,7 @@ Created on 22/09/2012
 
 from collider import Circle, Union, Arena, Polygon, Narc
 from mathUtils.vec import Vec
-from arc import Arc
+from arc import Arc, worldArc
 import sys
 
 class Contact(object):
@@ -200,23 +200,23 @@ def collidePolyArena(p,arena):
 
 def collideNarcNarc(n1, n2):
     contacts = []
+    ''' Sort by angle between '''
+    '''angle = n1.particle.p.angle(n2.particle.p)
+    arcs1 = sorted(n1.arcs, key = lambda arc: abs(arc.startAngle - angle))
     
-    #angle = n1.particle.p.angle(n2.particle.p)
-    #arcs1 = sorted(n1.arcs, key = lambda arc: abs(arc.startAngle - angle))
+    angle = n2.particle.p.angle(n1.particle.p)
+    arcs2 = sorted(n2.arcs, key = lambda arc: abs(arc.startAngle - angle))'''
     
-    #angle = n2.particle.p.angle(n1.particle.p)
-    #arcs2 = sorted(n2.arcs, key = lambda arc: abs(arc.startAngle - angle))
-    
-    for a1 in n2.arcs:
-        a1 = worldArc(a1, n1.particle)
+    for a1 in n1.arcs:
+        a1 = a1.worldArc
         for a2 in n2.arcs:
-            a2 = worldArc(a2, n2.particle)
+            a2 = a2.worldArc
             sep = a1.pos - a2.pos
             if a1.inArc(a2.pos) and a2.inArc(a1.pos):
                 length = sep.magnitude()
                 penetration = a1.radius + a2.radius - length
                 sep /= length
-                contacts += [Contact(n1.particle, n2.particle, a2.pos + sep * (a2.radius - penetration / 2), -sep, penetration, (n1.restitution + n2.restitution) / 2)]
+                contacts.append(Contact(n1.particle, n2.particle, a2.pos + sep * (a2.radius - penetration / 2), -sep, penetration, (n1.restitution + n2.restitution) / 2))
     if len(contacts) == 0:
         return []
     else:
@@ -231,7 +231,7 @@ def collideNarcNarc(n1, n2):
         
 def collideNarcArena(narc, arena):
     for arc in narc.arcs:
-        arc = worldArc(arc, narc.particle)
+        arc = arc.worldArc
         
         if arc.inArc(arc.pos + Vec(-1, 0)):
             if arc.pos.x - arc.radius < arena.left:
@@ -246,12 +246,3 @@ def collideNarcArena(narc, arena):
             if arc.pos.y + arc.radius > arena.bottom:
                 return [Contact(narc.particle, arena.particle, Vec(arc.pos.x, arena.bottom), Vec(0, 1), arc.pos.y - (arena.bottom - arc.radius), (narc.restitution + arena.restitution) / 2)]
     return []
-
-def worldArc(arc, particle):
-    position = particle.getPosition()
-    rotation = particle.getRotationMatrix()
-    
-    return Arc(position + rotation.rotatePoint(arc.pos), 
-    			arc.radius,
-    			rotation.rotatePoint(arc.start),
-    			rotation.rotatePoint(arc.end))

@@ -6,6 +6,7 @@ class Arc:
         self.radius = radius
         self.start = start
         self.end = end
+        self.worldArc = None
         
         self.startAngle = math.atan2(self.start.y, self.start.x)
         self.endAngle = math.atan2(self.end.y, self.end.x)
@@ -22,3 +23,25 @@ class Arc:
     
     def getEnd(self):
         return self.endAngle
+    
+    def getCenterOfMass(self):
+    	theta = endAngle - startAngle
+    	# Gets radius of the center of mass of the circle segment
+    	comArcRadius = 4 * radius * (math.sin(theta / 2) ** 3)
+    	comArcRadius /= 3 * (theta - math.sin(theta))
+    	
+    	midAngle = (self.startAngle + self.endAngle) / 2
+    	midPoint = self.pos + (makeVec(midAngle) * comArcRadius)
+    	return midPoint
+
+def makeVec(angle):
+    return Vec(math.cos(angle), math.sin(angle))
+
+def worldArc(arc, particle):
+    position = particle.getPosition()
+    rotation = particle.getRotationMatrix()
+    
+    return Arc(position + rotation.rotatePoint(arc.pos),
+               arc.radius,
+               rotation.rotatePoint(arc.start),
+               rotation.rotatePoint(arc.end))

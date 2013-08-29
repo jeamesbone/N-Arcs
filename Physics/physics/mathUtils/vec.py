@@ -126,3 +126,9 @@ class Vec:
         """Return one vector projected on the vector other"""
         n = other.normalized()
         return self.dot(n)*n
+        
+    def rotated(self, angle):
+    	"""Return a rotated copy"""
+    	newX = self.x * math.cos(angle) - self.y * math.sin(angle)
+    	newY = self.x * math.sin(angle) + self.y * math.cos(angle)
+    	return Vec(newX, newY)

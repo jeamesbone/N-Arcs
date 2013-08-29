@@ -27,6 +27,7 @@ class Rigidbody(object):
         self.torqueAccumulator = 0
         self.collider = None
         self.engine = None
+        self.boundRadius = 0
         
     def worldPosition(self,point):
         return self.p + self.mat.rotatePoint(point)
