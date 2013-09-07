@@ -51,7 +51,7 @@ class Test(object):
             rb.invmass = 1
             rb.invmoi = 0.001
             rb.collider = Narc(rb, 6)
-            rb.mat.setRotation(0) #random.uniform(0,2*math.pi))
+            rb.mat.setRotation(random.uniform(0,2*math.pi))
             rb.collider.restitution = 1.0
             
             self.engine.moving.append(rb)
@@ -67,7 +67,7 @@ class Test(object):
             rb.invmass = 1
             rb.invmoi = 0.001
             rb.collider = Narc(rb, 4)
-            rb.mat.setRotation(0) #random.uniform(0,2*math.pi))
+            rb.mat.setRotation(random.uniform(0,2*math.pi))
             rb.collider.restitution = 1.0
             
             self.engine.moving.append(rb)
