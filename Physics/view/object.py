@@ -60,14 +60,14 @@ class PolyObject(PhysicsObject):
         '''
         PhysicsObject.__init__(self,particle)
         
-        print particle.collider.points
+        #print particle.collider.points
         
         xs = [int(p.x) for p in particle.collider.points]
         ys = [int(p.y) for p in particle.collider.points]
         width = max(-min(xs),max(xs))*2
         height = max(-min(ys),max(ys))*2
         self.rect = Rect(-width/2,-height/2,width,height)
-        print self.rect
+        #print self.rect
         
         relps = zip([x-self.rect.left for x in xs],[y-self.rect.top for y in ys])
         
@@ -81,29 +81,60 @@ class NarcObject(PhysicsObject):
     def __init__(self, particle, color):
         PhysicsObject.__init__(self, particle)
         
+        for arc in particle.collider.arcs:
+            if arc.inArc(arc.pos + Vec(-1, 0)):
+                xMin = arc.pos.x - arc.radius
+            if arc.inArc(arc.pos + Vec(1, 0)):
+                xMax = arc.pos.x + arc.radius
+            if arc.inArc(arc.pos + Vec(0, -1)):
+                yMin = arc.pos.y - arc.radius
+            if arc.inArc(arc.pos + Vec(0, 1)):
+                yMax = arc.pos.y + arc.radius
+    
+        width = xMax - xMin
+        height = yMax - yMin
+                    
+        self.original = pygame.surface.Surface([width, height], SRCALPHA)
+        
+        for arc in particle.collider.arcs:
+            a1 = -arc.getStart()
+            a2 = -arc.getEnd()
+            if a2 - a1 > math.pi:
+                a2 -= math.pi * 2
+            if a1 < a2:
+                start = a1
+                end = a2
+            else:
+                start = a2
+                end = a1
+            pygame.draw.arc(self.original, color, Rect((arc.pos.x - xMin - arc.radius, arc.pos.y - yMin - arc.radius), (arc.radius * 2, arc.radius * 2)), start, end)
+    
+        self.view = self.original
+        self.rect = pygame.Rect(particle.p.x - xMin, particle.p.y - yMin, width, height)
+
+class NarcObjectOld(PhysicsObject):
+    def __init__(self, particle, color):
+        PhysicsObject.__init__(self, particle)
+        
         xMin = 99999999
         xMax = -99999999
         yMin = 99999999
         yMax = -99999999
         
         for arc in particle.collider.arcs:
-            if arc.inArc(arc.pos + Vec(-1, 0)):
-                if arc.pos.x - arc.radius < xMin:
-                    xMin = arc.pos.x - arc.radius
-            if arc.inArc(arc.pos + Vec(1, 0)):
-                if arc.pos.x + arc.radius > xMax:
-                    xMax = arc.pos.x + arc.radius
-            if arc.inArc(arc.pos + Vec(0, -1)):
-                if arc.pos.y - arc.radius < yMin:
-                    yMin = arc.pos.y - arc.radius
-            if arc.inArc(arc.pos + Vec(0, 1)):
-                if arc.pos.y + arc.radius > yMax:
-                    yMax = arc.pos.y + arc.radius
+            if arc.pos.x - arc.radius < xMin:
+                xMin = arc.pos.x - arc.radius
+            if arc.pos.x + arc.radius > xMax:
+                xMax = arc.pos.x + arc.radius
+            if arc.pos.y - arc.radius < yMin:
+                yMin = arc.pos.y - arc.radius
+            if arc.pos.y + arc.radius > yMax:
+                yMax = arc.pos.y + arc.radius
         
-        width = xMax - xMin + 2
-        height = yMax - yMin + 2
+        width = xMax - xMin
+        height = yMax - yMin
     	
-        print "Width:" + str(width) + " Height:" + str(height)
+        #print "Width:" + str(width) + " Height:" + str(height)
                     
         self.original = pygame.surface.Surface([width, height], SRCALPHA)
         
@@ -120,7 +151,7 @@ class NarcObject(PhysicsObject):
                 end = a1
             color = pygame.Color(random.randint(0,200),random.randint(0,200),random.randint(0,200))
             pygame.draw.arc(self.original, color, Rect((arc.pos.x - xMin - arc.radius, arc.pos.y - yMin - arc.radius), (arc.radius * 2, arc.radius * 2)), start, end)
-        
+
         self.view = self.original
         self.rect = pygame.Rect(particle.p.x - width / 2, particle.p.y - height / 2, width, height)
 

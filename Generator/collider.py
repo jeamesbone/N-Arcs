@@ -49,44 +49,42 @@ class Narc(Collider):
         self.n = n
         
         if n == 4:        
-            self.c1 = Vec(random.uniform(-1, 1), random.uniform(-1, 1)) * posVariance
-            c1 = self.c1
-            dist1 = c1.magnitude()
-            self.r1 = dist1 + 2 + random.uniform(0, radiusVariance)
-            r1 = self.r1
-            self.c2 = -c1.copy() / c1.magnitude() * random.uniform(r1 - dist1, posVariance)
-            c2 = self.c2
-            dist2 = c2.magnitude()
-            self.r2 = dist2 + 2 + random.uniform(0, radiusVariance)
-            r2 = self.r2
-            maximum = (r1 + r2 - (dist1 + dist2)) * 0.5
-            r3 = random.uniform(2, maximum)
-            r4 = random.uniform(2, maximum)
+			self.c1 = Vec(random.uniform(-1, 1), random.uniform(-1, 1)) * posVariance
+			dist1 = c1.magnitude()
+			self.r1 = dist1 + 2 + random.uniform(0, radiusVariance)
+			
+			self.c2 = -c1.copy() / c1.magnitude() * random.uniform(r1 - dist1, posVariance)
+			
+			dist2 = c2.magnitude()
+			self.r2 = dist2 + 2 + random.uniform(0, radiusVariance)
+			maximum = (r1 + r2 - (dist1 + dist2)) * 0.5
+			self.r3 = random.uniform(2, maximum)
+			self.r4 = random.uniform(2, maximum)
 		
-            c1c2 = c2 - c1
+			c1c2 = c2 - c1
 				
-            c1c2Dir = math.atan2(c1c2.y, c1c2.x)
-            c1c2Dist = c1c2.magnitude()
-			
-            c1c3Angle = calcAngle(r1, r3, r2, c1c2Dist)
-            c1c4Angle = calcAngle(r1, r4, r2, c1c2Dist)
-            c2c3Angle = calcAngle(r2, r3, r1, c1c2Dist)
-            c2c4Angle = calcAngle(r2, r4, r1, c1c2Dist)
+			c1c2Dir = math.atan2(c1c2.y, c1c2.x)
+			c1c2Dist = c1c2.magnitude()
 						
-            a1 = c1c2Dir - c1c3Angle
-            a2 = c1c2Dir + c1c4Angle
-            a3 = c1c2Dir + math.pi - c2c4Angle
-            a4 = c1c2Dir + math.pi + c2c3Angle
-
-            n1 = makeVec(a1)
-            n2 = makeVec(a2)
-            n3 = makeVec(a3)
-            n4 = makeVec(a4)
-
-            c3 = Vec(math.cos(a1), math.sin(a1)) * (r1 - r3) + c1
-            c4 = Vec(math.cos(a2), math.sin(a2)) * (r1 - r4) + c1
+			c1c3Angle = calcAngle(r1, r3, r2, c1c2Dist)
+			c1c4Angle = calcAngle(r1, r4, r2, c1c2Dist)
+			c2c3Angle = calcAngle(r2, r3, r1, c1c2Dist)
+			c2c4Angle = calcAngle(r2, r4, r1, c1c2Dist)
+						
+			a1 = c1c2Dir - c1c3Angle
+			a2 = c1c2Dir + c1c4Angle
+			a3 = c1c2Dir + math.pi - c2c4Angle
+			a4 = c1c2Dir + math.pi + c2c3Angle
 			
-            self.arcs = [Arc(c1, r1, n1, n2),
+			n1 = makeVec(a1)
+			n2 = makeVec(a2)
+			n3 = makeVec(a3)
+			n4 = makeVec(a4)
+						
+			c3 = Vec(math.cos(a1), math.sin(a1)) * (r1 - r3) + c1
+			c4 = Vec(math.cos(a2), math.sin(a2)) * (r1 - r4) + c1
+			
+			self.arcs = [Arc(c1, r1, n1, n2),
 						 Arc(c4, r4, n2, n3),
 						 Arc(c2, r2, n3, n4),
 						 Arc(c3, r3, n4, n1)]
@@ -192,56 +190,43 @@ class Narc(Collider):
         
         self.n = narc.n
         
-        if self.n == 4:
-            amount = random.gauss(1, 2)
-            self.c1 = narc.c1 * amount
-            c1 = self.c1
-            
-            dist1 = c1.magnitude()
-            
-            amount = random.gauss(1, 2)
-            self.r1 = narc.r1 * amount
-            r1 = self.r1
-            
-            amount = random.gauss(1, 2)
-            self.c2 = narc.c2 * amount
-            c2 = self.c2
-            
-            dist2 = c2.magnitude()
-            
-            amount = random.gauss(1, 2)
-            self.r2 = narc.r2 * amount
-            r2 = self.r2
-            
-            maximum = (r1 + r2 - (dist1 + dist2)) * 0.5
-            
-            r3 = random.uniform(2, maximum)
-            r4 = random.uniform(2, maximum)
-            
-            c1c2 = c2 - c1
-            
-            c1c2Dir = math.atan2(c1c2.y, c1c2.x)
-            c1c2Dist = c1c2.magnitude()
-            
-            c1c3Angle = calcAngle(r1, r3, r2, c1c2Dist)
-            c1c4Angle = calcAngle(r1, r4, r2, c1c2Dist)
-            c2c3Angle = calcAngle(r2, r3, r1, c1c2Dist)
-            c2c4Angle = calcAngle(r2, r4, r1, c1c2Dist)
-            
-            a1 = c1c2Dir - c1c3Angle
-            a2 = c1c2Dir + c1c4Angle
-            a3 = c1c2Dir + math.pi - c2c4Angle
-            a4 = c1c2Dir + math.pi + c2c3Angle
+        if n == 4:
+			self.c1 = narc.c1
+			dist1 = c1.magnitude()
+			self.r1 = narc.r1
 			
-            n1 = makeVec(a1)
-            n2 = makeVec(a2)
-            n3 = makeVec(a3)
-            n4 = makeVec(a4)
-            
-            c3 = Vec(math.cos(a1), math.sin(a1)) * (r1 - r3) + self.c1
-            c4 = Vec(math.cos(a2), math.sin(a2)) * (r1 - r4) + self.c1
+			self.c2 = -c1.copy() / c1.magnitude() * random.uniform(r1 - dist1, posVariance)
 			
-            self.arcs = [Arc(c1, r1, n1, n2),
+			dist2 = c2.magnitude()
+			self.r2 = narc.r2
+			maximum = (r1 + r2 - (dist1 + dist2)) * 0.5
+			self.r3 = narc.r3
+			self.r4 = narc.r4
+            
+			c1c2 = c2 - c1
+            
+			c1c2Dir = math.atan2(c1c2.y, c1c2.x)
+			c1c2Dist = c1c2.magnitude()
+            
+			c1c3Angle = calcAngle(r1, r3, r2, c1c2Dist)
+			c1c4Angle = calcAngle(r1, r4, r2, c1c2Dist)
+			c2c3Angle = calcAngle(r2, r3, r1, c1c2Dist)
+			c2c4Angle = calcAngle(r2, r4, r1, c1c2Dist)
+            
+			a1 = c1c2Dir - c1c3Angle
+			a2 = c1c2Dir + c1c4Angle
+			a3 = c1c2Dir + math.pi - c2c4Angle
+			a4 = c1c2Dir + math.pi + c2c3Angle
+			
+			n1 = makeVec(a1)
+			n2 = makeVec(a2)
+			n3 = makeVec(a3)
+			n4 = makeVec(a4)
+            
+			c3 = Vec(math.cos(a1), math.sin(a1)) * (r1 - r3) + c1
+			c4 = Vec(math.cos(a2), math.sin(a2)) * (r1 - r4) + c1
+			
+			self.arcs = [Arc(c1, r1, n1, n2),
 						 Arc(c4, r4, n2, n3),
 						 Arc(c2, r2, n3, n4),
 						 Arc(c3, r3, n4, n1)]

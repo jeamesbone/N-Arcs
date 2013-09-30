@@ -27,22 +27,7 @@ class Test(object):
         self.engine.contactGenerators.append(ContactGenerator(self.engine))
         self.engine.gravity = Vec(0,0)
         
-        '''for i in range(12):
-			p = Particle();
-			p.engine = self.engine
-			p.p = Vec(random.uniform(20,580),random.uniform(20,580))
-			p.v = Vec(random.uniform(-50,50),random.uniform(-50,50))
-			p.collider = Polygon(p,[Vec(random.uniform(-30,-10),random.uniform(10,30)), 
-									Vec(random.uniform(-30,-10),random.uniform(-30,-10)),
-									Vec(random.uniform(10,30),random.uniform(-30,-10)), 
-									Vec(random.uniform(10,30),random.uniform(10,30))])
-			p.collider.restitution = 1.0
-		
-			self.engine.moving.append(p)
-			color = pygame.Color(random.randint(0,200),random.randint(0,200),random.randint(0,200))
-			self.view.objects.append(PolyObject(p,color))'''
-        
-        for i in range(5):
+        for i in range(10):
             rb = Rigidbody()
             rb.engine = self.engine
             rb.p = Vec(random.uniform(20,580),random.uniform(20,580))
@@ -50,20 +35,22 @@ class Test(object):
             rb.w = random.uniform(-0.25,0.25)
             rb.invmass = 1
             rb.invmoi = 0.001
-            rb.collider = Narc(rb, 6)
-            rb.mat.setRotation(random.uniform(0,2*math.pi))
+            rb.collider = Polygon(rb,[Vec(random.uniform(-30,-10),random.uniform(10,30)),
+									Vec(random.uniform(-30,-10),random.uniform(-30,-10)),
+									Vec(random.uniform(10,30),random.uniform(-30,-10)), 
+									Vec(random.uniform(10,30),random.uniform(10,30))])
             rb.collider.restitution = 1.0
             
             self.engine.moving.append(rb)
             color = pygame.Color(random.randint(0,200),random.randint(0,200),random.randint(0,200))
-            self.view.objects.append(NarcObject(rb,color))
+            self.view.objects.append(PolyObject(rb,color))
 
-        for i in range(5):
+        '''for i in range(10):
             rb = Rigidbody()
             rb.engine = self.engine
             rb.p = Vec(random.uniform(20,580),random.uniform(20,580))
-            rb.v = Vec(random.uniform(-10,10),random.uniform(-10,10))
-            rb.w = random.uniform(-0.1,0.1)
+            rb.v = Vec(random.uniform(-50,50),random.uniform(-50,50))
+            rb.w = random.uniform(-0.5,0.5)
             rb.invmass = 1
             rb.invmoi = 0.001
             rb.collider = Narc(rb, 4)
@@ -72,7 +59,7 @@ class Test(object):
             
             self.engine.moving.append(rb)
             color = pygame.Color(random.randint(0,200),random.randint(0,200),random.randint(0,200))
-            self.view.objects.append(NarcObject(rb,color))
+            self.view.objects.append(NarcObject(rb,color))'''
 
         arena = Particle()
         arena.engine = self.engine
@@ -83,14 +70,17 @@ class Test(object):
         arena.invmass = 0
         
     def Run(self):
+        avefps = 0
+        numFrames = 1
         dt = 0
         fps = 0
         physicsdt = 0.025
         elapsed = 0
+        totElapsed = 0
         running = True
         while running:
             event = pygame.event.poll()
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT or totElapsed >= 20:
                 running = False
             
             self.screen.fill([245, 240, 230]) # blank the screen.
@@ -103,14 +93,28 @@ class Test(object):
             
             self.engine.step(physicsdt)
             
-            self.view.update() 
+            self.view.update()
+        
+            totElapsed += dt
+        
+            newfps = 1.0/dt
+        
+            avefps *= numFrames
+            avefps += newfps
                 
-            
-            fpstext = '%.1f'%(1.0/dt)
+            numFrames += 1
+
+            avefps /= numFrames
+        
+            fpstext = 'Current: %.1f | Average: %.1f | Frames: %d'%(newfps, avefps, numFrames)
             fpsSurface = self.font.render(fpstext,False,Color(0,0,0))
             self.screen.blit(fpsSurface,(0,0))
             
             pygame.display.update()
+        #print "Average: " + str(avefps)
+        #print "Time: " + str(totElapsed)
+        #print "Frames: " + str(numFrames)
+        
             
 if __name__=="__main__":
     #import cProfile

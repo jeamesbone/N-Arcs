@@ -44,9 +44,9 @@ class PhysicsEngine(object):
         self.contacts = []
         
         # Spatial hashing stuff
-        self.clearCells()
+        '''self.clearCells()
         for o in self.moving:
-        	self.addObjectToCells(o) 
+        	self.addObjectToCells(o) '''
         
         for cg in self.contactGenerators:
             cg.update()
