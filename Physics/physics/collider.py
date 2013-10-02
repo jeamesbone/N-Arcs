@@ -43,8 +43,8 @@ class Narc(Collider):
     def __init__(self, particle, n):
         Collider.__init__(self, particle)
         
-        posVariance = 40
-        radiusVariance = 15
+        posVariance = 100
+        radiusVariance = 40
         
         self.n = n
         
@@ -102,7 +102,6 @@ class Narc(Collider):
             r1 = 60
             
             angle = 2 * math.pi / (n / 2)
-            print str(angle)
             #c2 = c1.rotated(angle) / c1.magnitude() * random.uniform(0, posVariance / 2)
             c2 = c1.rotated(-angle) / c1.magnitude() * 40
             dist2 = c2.magnitude()
@@ -147,18 +146,13 @@ class Narc(Collider):
             c3c6Angle = calcAngle(r3, r6, r1, c3c1Dist)
             c1c6Angle = calcAngle(r1, r6, r3, c3c1Dist)
             
-            print "c1c2Dir:" + str(c1c2Dir)
-            print "c1c4Angle:" + str(c1c4Angle)
-            
-			# Get local angles
+	    # Get local angles
             a1 = c1c2Dir - c1c4Angle
             a2 = c3c1Dir + math.pi + c1c6Angle
             a3 = c3c1Dir - c3c6Angle
             a4 = c2c3Dir + math.pi + c3c5Angle
             a5 = c2c3Dir - c2c5Angle
             a6 = c1c2Dir + math.pi + c2c4Angle
-			
-            print "a1:" + str(a1)
             
             n1 = makeVec(a1)
             n2 = makeVec(a2)
@@ -193,23 +187,23 @@ class Narc(Collider):
         self.n = narc.n
         
         if self.n == 4:
-            amount = random.gauss(1, 2)
+            amount = random.random() + 0.5
             self.c1 = narc.c1 * amount
             c1 = self.c1
             
             dist1 = c1.magnitude()
             
-            amount = random.gauss(1, 2)
+            amount = random.random() + 0.5
             self.r1 = narc.r1 * amount
             r1 = self.r1
             
-            amount = random.gauss(1, 2)
+            amount = random.random() + 0.5
             self.c2 = narc.c2 * amount
             c2 = self.c2
             
             dist2 = c2.magnitude()
             
-            amount = random.gauss(1, 2)
+            amount = random.random() + 0.5
             self.r2 = narc.r2 * amount
             r2 = self.r2
             
@@ -242,9 +236,16 @@ class Narc(Collider):
             c4 = Vec(math.cos(a2), math.sin(a2)) * (r1 - r4) + self.c1
 			
             self.arcs = [Arc(c1, r1, n1, n2),
-						 Arc(c4, r4, n2, n3),
-						 Arc(c2, r2, n3, n4),
-						 Arc(c3, r3, n4, n1)]
+		         Arc(c4, r4, n2, n3),
+			 Arc(c2, r2, n3, n4),
+			 Arc(c3, r3, n4, n1)]
+    
+    def getPoly(self):
+        poly = Polygon(None, [])
+        for arc in self.arcs:
+            poly.points.append(self.particle.p + arc.start)
+        poly.points.append(self.particle.p + self.arcs[-1].end)
+        return poly
     
     def getCenterOfMass(self):
     	points = []
@@ -252,7 +253,7 @@ class Narc(Collider):
     	for arc in self.arcs:
     		centerOfMass += arc.getCenterOfMass()
     		points.append(arc.start)
-    	points.append(self.arcs[len(self.arcs)-1].end)
+    	points.append(self.arcs[-1].end)
     	
     	area = 0
     	cx = 0
