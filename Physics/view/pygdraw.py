@@ -1,10 +1,16 @@
 import pyglet
 import math
 import random
+
 from pyglet.gl import *
 from physics.arc import Arc
-from physics.collider import Narc
+from physics.collider import Narc, Polygon
 
+def drawObject(obj):
+    if isinstance(obj, Narc):
+        drawNarc(obj)
+    #elif isinstance(obj, Polygon):
+        #drawPolygon(obj)
 
 def drawRect(x, y, width, height):
     pyglet.graphics.draw(4, pyglet.gl.GL_LINE_LOOP, 
@@ -13,11 +19,14 @@ def drawRect(x, y, width, height):
 
 def drawNarc(narc):
     glTranslatef(narc.particle.p.x, narc.particle.p.y, 0.0)
+    #r = narc.particle.getRotation()
+    #if r: 
+    #    glRotatef(math.degrees(r), narc.particle.p.x, narc.particle.p.y, 0.0) 
     for arc in narc.arcs:
         drawArc(arc)
 
 def drawArc(arc, segments=10):
-    glColor3f(random.random(), random.random(), random.random())
+    glColor3f(0.0, 0.0, 0.0)
     glBegin(GL_LINE_STRIP)
     for i in range(segments + 1):
         end = arc.endAngle

@@ -153,6 +153,106 @@ class Narc(Collider):
             a4 = c2c3Dir + math.pi + c3c5Angle
             a5 = c2c3Dir - c2c5Angle
             a6 = c1c2Dir + math.pi + c2c4Angle
+            a7 = 
+            a8 = c1c2Dir + math.pi + c2c5Angle
+            
+            n1 = makeVec(a1)
+            n2 = makeVec(a2)
+            n3 = makeVec(a3)
+            n4 = makeVec(a4)
+            n5 = makeVec(a5)
+            n6 = makeVec(a6)
+            n7 = makeVec(a7)
+            n8 = makeVec(a8)
+						
+            c5 = Vec(math.cos(a1), math.sin(a1)) * (r1 - r4) + c1
+            c6 = Vec(math.cos(a5), math.sin(a5)) * (r2 - r5) + c2
+            c7 = Vec(math.cos(a3), math.sin(a3)) * (r3 - r6) + c3
+            
+            self.arcs = [Arc(c1, r1, n1, n2),
+						 Arc(c6, r6, n2, n3),
+						 Arc(c3, r3, n3, n4),
+						 Arc(c5, r5, n4, n5),
+						 Arc(c2, r2, n5, n6),
+						 Arc(c4, r4, n6, n1)]
+        
+        elif n == 8:
+            posVariance = 80
+            radiusVariance = 50
+            
+            #c1 = Vec(random.uniform(-1, 1), random.uniform(-1, 1)) * posVariance
+            c1 = Vec(0, 1) * 40
+            dist1 = c1.magnitude()
+            #r1 = dist1 + 2 + random.uniform(0, radiusVariance)
+            r1 = 60
+            
+            angle = 2 * math.pi / (n / 2)
+            #c2 = c1.rotated(angle) / c1.magnitude() * random.uniform(0, posVariance / 2)
+            c2 = c1.rotated(-angle) / c1.magnitude() * 40
+            dist2 = c2.magnitude()
+            #r2 = dist2 + 2 + random.uniform(r1, radiusVariance)
+            r2 = 60
+            
+            c3 = c2.rotated(-angle) / c2.magnitude() * 40
+            dist3 = c3.magnitude()
+            #r3 = dist3 + 2 + random.uniform(r2, radiusVariance)
+            r3 = 60
+
+            c4 = c3.rotated(-angle) / c3.magnitude() * 40
+            dist4 = c4.magnitude()
+            #r3 = dist3 + 2 + random.uniform(r2, radiusVariance)
+            r4 = 60
+
+            
+            #maximum = (r1 + r2 + r3 - (dist1 + dist2 + dist3)) / 6
+            
+            c1c2 = c2 - c1
+            c2c3 = c3 - c2
+            c3c4 = c4 - c3
+            c4c1 = c1 - c4
+			
+            c1c2Dir = math.atan2(c1c2.y, c1c2.x)
+            c1c2Dist = c1c2.magnitude()
+			
+            c2c3Dir = math.atan2(c2c3.y, c2c3.x)
+            c2c3Dist = c2c3.magnitude()
+						
+            c3c4Dir = math.atan2(c3c4.y, c3c4.x)
+            c3c4Dist = c3c4.magnitude()
+            
+            c4c1Dir = math.atan2(c4c1.y, c4c1.x)
+	    c4c1Dist = c4c1.magnitude()
+
+            #r4 = random.uniform(0, (r1 + r2 - c1c2Dist) / 2)
+            #r5 = random.uniform(0, (r2 + r3 - c2c3Dist) / 2)
+            #r6 = random.uniform(0, (r3 + r1 - c3c1Dist) / 2)
+
+            r5 = 5
+            r6 = 5
+            r7 = 5
+            r8 = 5
+			# Calculate Angles
+            c1c5Angle = calcAngle(r1, r5, r2, c1c2Dist)
+            c2c5Angle = calcAngle(r2, r5, r1, c1c2Dist)
+
+            c2c6Angle = calcAngle(r2, r6, r3, c2c3Dist)
+            c3c6Angle = calcAngle(r3, r6, r2, c2c3Dist)
+
+            c3c7Angle = calcAngle(r3, r7, r4, c3c4Dist)
+            c4c7Angle = calcAngle(r4, r7, r3, c3c4Dist)
+            
+            c4c8Angle = calcAngle(r4, r8, r1, c4c1Dist)
+            c1c8Angle = calcAngle(r1, r8, r4, c4c1Dist)
+                        
+	    # Get local angles
+            a1 = c1c2Dir - c1c5Angle
+            a2 = c4c1Dir + math.pi + c1c6Angle
+            a3 = c4c1Dir - c3c6Angle
+            a4 = c2c3Dir + math.pi + c3c5Angle
+            a5 = c2c3Dir - c3c7Angle
+            a6 = c3c4Dir + math.pi + c2c4Angle
+            a7 = c3c4Dir - 
+            a8 = 
             
             n1 = makeVec(a1)
             n2 = makeVec(a2)
@@ -171,7 +271,6 @@ class Narc(Collider):
 						 Arc(c5, r5, n4, n5),
 						 Arc(c2, r2, n5, n6),
 						 Arc(c4, r4, n6, n1)]
-
 
         self.boundRadius = 0
         for arc in self.arcs:
