@@ -115,7 +115,9 @@ class Test(object):
         #print "Time: " + str(totElapsed)
         #print "Frames: " + str(numFrames)
         
-            
+t = Test()
+t.Run
+
 if __name__=="__main__":
     #import cProfile
     
