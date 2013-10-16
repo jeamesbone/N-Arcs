@@ -49,14 +49,14 @@ class Test(object):
         rb = Rigidbody()
         rb.engine = self.engine
         rb.p = Vec(random.uniform(20,580),random.uniform(20,580))
-        rb.v = Vec(random.uniform(-100,100),random.uniform(-100,100))
+        rb.v = Vec(random.uniform(-50,50),random.uniform(-50,50))
         rb.w = random.uniform(-0.5,0.5)
         rb.invmass = 1
         rb.invmoi = 0.001
         rb.collider = Narc(rb, 4)
-        rb.mat.setRotation(random.uniform(0,2*math.pi))
+        rb.mat.setRotation(random.uniform(0, 2*math.pi))
         rb.collider.restitution = 1.0
-
+        
         self.engine.moving.append(rb)
         self.objects.append(rb.collider)
         

@@ -1,4 +1,5 @@
 import math
+import random
 
 class Arc:
     def __init__(self, pos, radius, start, end):
@@ -10,6 +11,10 @@ class Arc:
         
         self.startAngle = math.atan2(self.start.y, self.start.x)
         self.endAngle = math.atan2(self.end.y, self.end.x)
+        
+        self.r = random.random()
+        self.g = random.random()
+        self.b = random.random()
         
     def inArc(self, point):
         transPoint = point - self.pos

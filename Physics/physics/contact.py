@@ -213,14 +213,14 @@ def collideNarcNarc(n1, n2):
             a2 = a2.worldArc
             sep = a1.pos - a2.pos
             if a1.inArc(a2.pos) and a2.inArc(a1.pos):
-                if (a1.radius + a2.radius) ** 2 < sep.magnitude_squared:
-                    length = sep.magnitude()
-                    penetration = a1.radius + a2.radius - length
-                    sep /= length
-                    return [Contact(n1.particle, n2.particle, a2.pos + sep * (a2.radius - penetration / 2), -sep, penetration, (n1.restitution + n2.restitution) / 2)]
-                    #contacts.append(Contact(n1.particle, n2.particle, a2.pos + sep * (a2.radius - penetration / 2), -sep, penetration, (n1.restitution + n2.restitution) / 2))
-    return []
-    '''if len(contacts) == 0:
+                #if (a1.radius + a2.radius) ** 2 < sep.magnitude_squared:
+                length = sep.magnitude()
+                penetration = a1.radius + a2.radius - length
+                sep /= length
+                contacts += [Contact(n1.particle, n2.particle, a2.pos + sep * (a2.radius - penetration / 2), -sep, penetration, (n1.restitution + n2.restitution) / 2)]
+                #contacts.append(Contact(n1.particle, n2.particle, a2.pos + sep * (a2.radius - penetration / 2), -sep, penetration, (n1.restitution + n2.restitution) / 2))
+    #return []
+    if len(contacts) == 0:
         return []
     else:
         minContact = contacts[0]
@@ -230,7 +230,7 @@ def collideNarcNarc(n1, n2):
         if minContact.penetration > 0:
             return [minContact]
         else:
-            return []'''
+            return []
         
 def collideNarcArena(narc, arena):
     for arc in narc.arcs:

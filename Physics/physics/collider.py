@@ -48,6 +48,88 @@ class Narc(Collider):
         
         self.n = n
         
+        '''angle = 2 * math.pi / (n / 2)
+        
+        c = []
+        dist = []
+        r = []
+        
+        # starting point
+        start = Vec(random.uniform(-1, 1), random.uniform(-1, 1))
+        
+        # rotation angle
+        angle = 2 * math.pi / (n / 2)
+        
+        # create circles
+        for i in range(n/2):
+            c += [start.rotated(-angle * i) * 40]
+            r += [n ** 2]
+            dist += [c[i].magnitude()]
+        
+        # small circle radii
+        for i in range(n/2):
+            r += [n]
+        
+        cc = {}
+        ccDir = {}
+        ccDist = {}
+        ccAngle = {}
+        
+        # circle-circle vectors and vars
+        for i in range(n/2):
+            j = (i+1) % (n/2)
+            cc[(i, j)] = c[j] - c[i]
+            ccDir[(i, j)] = math.atan2(cc[(i, j)].x, cc[(i, j)].y)
+            ccDist[(i, j)] = cc[(i, j)].magnitude()
+            
+            ccAngle[(i, i + n/2)] = calcAngle(r[i], r[i+n/2], r[j], ccDist[(i, j)])
+            ccAngle[(j, i + n/2)] = calcAngle(r[j], r[i+n/2], r[i], ccDist[(i, j)])
+        
+        # WORKS TO HEAR!!!!
+        
+        a = []
+
+        a += [ccDir[(0, 1)] - ccAngle[(0, n/2)]]
+        
+        for i in range(n/2 - 1):
+            j = (n/2 - 1 - i)
+            k = (n/2 - i) % (n/2)
+            a += [ccDir[(j, k)] + math.pi + ccAngle[(k, n-i-1)]]
+            
+            a += [ccDir[(j, k)] - ccAngle[(j, n-i-1)]]
+            
+        a += [ccDir[(0, 1)] + math.pi + ccAngle[1, n/2]]
+        
+        # WORKS TO HEAR
+        
+        nv = []
+        for i in range(n):
+            nv += [makeVec(a[i])]
+        print "n:" + str(n)
+        c += [Vec(math.cos(a[0]), math.sin(a[0])) * (r[0] - r[n/2]) + c[0]]
+        print "a[0], a[0], r[0], r["+str(n/2)+"], c[0]" 
+        for i in range(1, n/2):
+            m = n - 2 * i
+            c += [Vec(math.cos(a[m]), math.sin(a[m])) * (r[i] - r[i+n/2]) + c[i]]
+            print "a[" + str(m) + "], a[" + str(m) + "], r[" + str(i) + "], r[" + str(i+n/2) + "], c[" + str(i) + "]"
+        
+        c5 = Vec(math.cos(a1), math.sin(a1)) * (r1 - r5) + c1
+        c6 = Vec(math.cos(a7), math.sin(a7)) * (r2 - r6) + c2
+        c7 = Vec(math.cos(a5), math.sin(a5)) * (r3 - r7) + c3
+        c8 = Vec(math.cos(a3), math.sin(a3)) * (r4 - r8) + c4
+
+        self.arcs = []
+        
+        #self.arcs += [Arc(c[0], r[0], n[0], n[1])]
+        for i in range(n/2):
+            v = n - 1 - i
+            w = n/2 - 1 - i
+            x = (1 + i * 2) % 8
+            y = (2 + i * 2) % 8
+            z = (3 + i * 2) % 8
+            self.arcs += [Arc(c[v], r[v], nv[x], nv[y])]
+            self.arcs += [Arc(c[w], r[w], nv[y], nv[z])]'''
+        
         if n == 4:        
             self.c1 = Vec(random.uniform(-1, 1), random.uniform(-1, 1)) * posVariance
             c1 = self.c1
@@ -223,10 +305,10 @@ class Narc(Collider):
             #r5 = random.uniform(0, (r2 + r3 - c2c3Dist) / 2)
             #r6 = random.uniform(0, (r3 + r1 - c3c1Dist) / 2)
 
-            r5 = 3
-            r6 = 6
-            r7 = 3
-            r8 = 3
+            r5 = 4
+            r6 = 4
+            r7 = 4
+            r8 = 4
 			# Calculate Angles
             c1c5Angle = calcAngle(r1, r5, r2, c1c2Dist)
             c2c5Angle = calcAngle(r2, r5, r1, c1c2Dist)
@@ -271,7 +353,7 @@ class Narc(Collider):
  						 Arc(c3, r3, n5, n6),
  						 Arc(c6, r6, n6, n7),
  						 Arc(c2, r2, n7, n8),
- 						 Arc(c5, r5, n7, n1)]
+ 						 Arc(c5, r5, n8, n1)]
 
         self.boundRadius = 0
         for arc in self.arcs:

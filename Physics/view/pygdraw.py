@@ -12,7 +12,7 @@ def drawObject(obj):
     elif isinstance(obj, Polygon):
         drawPolygon(obj)
 
-def drawPolygon(polygon):
+#def drawPolygon(polygon):
     
 
 def drawRect(x, y, width, height):
@@ -34,7 +34,7 @@ def drawArc(arc, segments=10):
     glEnable(GL_BLEND) 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST)
-    glColor3f(0.0, 0.0, 0.0)
+    glColor3f(arc.r, arc.g, arc.b)
     glBegin(GL_LINE_STRIP)
     for i in range(segments + 1):
         end = arc.endAngle
