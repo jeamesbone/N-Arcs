@@ -1,4 +1,4 @@
-honours-project
+N-Arcs
 ===============
 
 The project portion of my honours thesis.
