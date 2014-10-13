@@ -10,4 +10,4 @@ I began the implementation of a simulated annealing and genetic algorithm based 
 Bonus!
 ------
 
-Also included is a 'N-Arc Maker' code for a small Dart web app that allows the creation of abitrary Arc structures for importing into the python project. This feature was dropped for the final project, but I think the app is cool.
+Also included is 'N-Arc Maker' a small Dart web app that allows the creation of abitrary Arc structures for importing into the python project. This feature was dropped for the final project, but I think the app is cool.
